@@ -1,0 +1,37 @@
+
+name: Build & Ship
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v1
+    - name: Build Lambdas
+      run: |
+        file="create_issue"
+        echo "Building: $file"
+        cd $file
+        echo "Installing requirements..."
+        pip install -q -r requirements.txt -t .
+        echo "Zipping..."
+        zip -qq -r ../$file.zip .
+        cd ..
+        echo "Cleaning up..."
+        rm -rf $file
+    - name: Ship to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --follow-symlinks --delete
+      env:
+        SOURCE_DIR: "./"
+        AWS_REGION: "us-east-1"
+        DEST_DIR: github-issues
+        AWS_S3_BUCKET: sumu-stacks
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

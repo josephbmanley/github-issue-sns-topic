@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: SNS Topic to create GitHub Issues
+Parameters:
+  TopicName:
+    Type: String
+  GithubRepository:
+    Type: String
+  GenerateOwnerName:
+    Type: String
+
+Resources:
+  SnsTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      TopicName: !Ref TopicName
+
+  CreateIssueLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      Code:
+        S3Bucket: "sumu-stacks"
+        S3Key: !Sub "github-issues/create_issue.zip"
+      FunctionName: "Github-CreateIssue"
+      Description: Lambda that creates a issue in Github
+      MemorySize: 128
+      Timeout: 10
+      #Role: !GetAtt AlertExecutionerRole.Arn
+      Environment:
+        Variables:
+          GENERATED_OWNER: !Ref GenerateOwnerName
+          REPOSITORY: !Ref GithubRepository
+
+  SnsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref SnsTopic
+      FunctionName: !GetAtt AlertHandler.Arn
