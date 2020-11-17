@@ -5,8 +5,6 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-
-
 def lambda_handler(event, context):
 
     # Secret Client
@@ -16,7 +14,7 @@ def lambda_handler(event, context):
     token = secretsmanager.get_secret_value(SecretId=os.environ.get("GITHUB_TOKEN_SECRET")).get("SecretString")
     
     # GitHub client
-    github = Github(token)
+    github = Github(base_url=f"https://{os.environ.get('GITHUB_HOSTNAME','github.com')}/api/v3", login_or_token=token)
 
     repo = github.get_repo(os.environ.get("REPOSITORY"))
 
