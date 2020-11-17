@@ -4,9 +4,19 @@ from github import Github
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-github = Github("")
+
+
 
 def lambda_handler(event, context):
+
+    # Secret Client
+    secretsmanager = boto3.client('secretsmanager')
+
+    # Get Secrets
+    token = secretsmanager.get_secret_value(SecretId=os.environ.get("GITHUB_TOKEN_SECRET")).get("SecretString")
+    
+    # GitHub client
+    github = Github(token)
 
     repo = github.get_repo(os.environ.get("REPOSITORY"))
 

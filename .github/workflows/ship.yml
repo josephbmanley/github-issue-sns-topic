@@ -4,7 +4,7 @@ name: Build & Ship
 on:
   push:
     branches:
-    - master
+    - main
 
 jobs:
   deploy:

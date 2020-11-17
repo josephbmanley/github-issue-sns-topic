@@ -7,6 +7,8 @@ Parameters:
     Type: String
   GenerateOwnerName:
     Type: String
+  GitHubTokenSecret:
+    Type: String
 
 Resources:
   SnsTopic:
@@ -31,6 +33,7 @@ Resources:
         Variables:
           GENERATED_OWNER: !Ref GenerateOwnerName
           REPOSITORY: !Ref GithubRepository
+          GITHUB_TOKEN_SECRET: !Ref GitHubTokenSecret
 
   SnsLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -38,4 +41,4 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: sns.amazonaws.com
       SourceArn: !Ref SnsTopic
-      FunctionName: !GetAtt AlertHandler.Arn
+      FunctionName: !GetAtt CreateIssueLambda.Arn
