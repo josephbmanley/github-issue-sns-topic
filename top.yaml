@@ -9,6 +9,8 @@ Parameters:
     Type: String
   GitHubTokenSecret:
     Type: String
+  IamRoleArn:
+    Type: String
 
 Resources:
   SnsTopic:
@@ -28,7 +30,7 @@ Resources:
       Description: Lambda that creates a issue in Github
       MemorySize: 128
       Timeout: 10
-      #Role: !GetAtt AlertExecutionerRole.Arn
+      Role: !Ref IamRoleArn
       Environment:
         Variables:
           GENERATED_OWNER: !Ref GenerateOwnerName
