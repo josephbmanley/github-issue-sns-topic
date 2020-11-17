@@ -12,6 +12,10 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v1
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
     - name: Build Lambdas
       run: |
         file="create_issue"
