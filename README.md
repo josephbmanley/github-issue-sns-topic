@@ -20,7 +20,7 @@ Then fill out the parameters!
 
 ### Download Template
 
-The template is public accessible at: [https://sumu-stacks.s3.amazonaws.com/github-issues/top.yaml](https://sumu-stacks.s3.amazonaws.com/github-issues/top.yaml)
+The template is publicly accessible at: [https://sumu-stacks.s3.amazonaws.com/github-issues/top.yaml](https://sumu-stacks.s3.amazonaws.com/github-issues/top.yaml)
 
 You can either download the template from your web browser or use something like the wget command.
 
