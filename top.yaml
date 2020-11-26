@@ -52,3 +52,10 @@ Resources:
       Protocol: lambda
       TopicArn: !Ref SnsTopic
 
+Outputs:
+  TopicArn:
+    Description: Anr of the SNS topic
+    Value: !Ref SnsTopic
+  TopicName:
+    Description: Name of the SNS topic
+    Value: !GetAtt SnsTopic.TopicName
