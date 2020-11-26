@@ -44,3 +44,11 @@ Resources:
       Principal: sns.amazonaws.com
       SourceArn: !Ref SnsTopic
       FunctionName: !GetAtt CreateIssueLambda.Arn
+
+  SnsLambdaSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt CreateIssueLambda.Arn
+      Protocol: lambda
+      TopicArn: !Ref SnsTopic
+
